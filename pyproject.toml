@@ -1,0 +1,17 @@
+[project]
+name = "speak-language"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "blobfile>=3.0.0",
+    "gradio>=6.2.0",
+    "protobuf>=6.30.2",
+    "psutil>=7.2.1",
+    "scipy>=1.16.3",
+    "soundfile>=0.13.1",
+    "tiktoken>=0.9.0",
+    "torchaudio>=2.7.0",
+    "transformers>=4.51.3",
+]

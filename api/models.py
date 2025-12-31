@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Modèles Pydantic pour l'API SeamlessM4T
+Pydantic models for SeamlessM4T API
 """
 
 from pydantic import BaseModel, Field
@@ -79,23 +79,23 @@ class T2TTRequest(BaseModel):
 
 
 class TranslationResponse(BaseModel):
-    """Réponse générique pour les traductions"""
-    success: bool = Field(..., description="Statut de la requête")
-    message: Optional[str] = Field(None, description="Message d'état")
-    result: Optional[str] = Field(None, description="Résultat de la traduction")
-    error: Optional[str] = Field(None, description="Message d'erreur")
+    """Generic response for translations"""
+    success: bool = Field(..., description="Request status")
+    message: Optional[str] = Field(None, description="Status message")
+    result: Optional[str] = Field(None, description="Translation result")
+    error: Optional[str] = Field(None, description="Error message")
 
 
 class AudioTranslationResponse(TranslationResponse):
-    """Réponse pour les traductions audio"""
-    audio_url: Optional[str] = Field(None, description="URL du fichier audio généré")
-    duration: Optional[float] = Field(None, description="Durée de l'audio en secondes")
+    """Response for audio translations"""
+    audio_url: Optional[str] = Field(None, description="URL of the generated audio file")
+    duration: Optional[float] = Field(None, description="Audio duration in seconds")
 
 
 class TextTranslationResponse(TranslationResponse):
-    """Réponse pour les traductions textuelles"""
-    text: Optional[str] = Field(None, description="Texte traduit")
-    character_count: Optional[int] = Field(None, description="Nombre de caractères")
+    """Response for text translations"""
+    text: Optional[str] = Field(None, description="Translated text")
+    character_count: Optional[int] = Field(None, description="Character count")
 
 
 class HealthCheckResponse(BaseModel):

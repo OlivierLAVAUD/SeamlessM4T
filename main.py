@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Point d'entrée principal pour l'API SeamlessM4T
+Main entry point for SeamlessM4T API
 """
 
 import argparse
@@ -23,25 +23,25 @@ logger = logging.getLogger(__name__)
 
 
 def run_api_in_thread():
-    """Lance l'API dans un thread séparé"""
+    """Run the API in a separate thread"""
     try:
-        logger.info("🚀 Lancement de l'API FastAPI dans un thread séparé...")
+        logger.info("🚀 Launching FastAPI in a separate thread...")
         run_api()
     except Exception as e:
-        logger.error(f"❌ Erreur dans le thread API: {e}")
+        logger.error(f"❌ Error in API thread: {e}")
 
 
 def run_gradio_in_thread():
-    """Lance l'application Gradio dans un thread séparé"""
+    """Run the Gradio application in a separate thread"""
     try:
-        logger.info("🚀 Lancement de l'application Gradio dans un thread séparé...")
+        logger.info("🚀 Launching Gradio application in a separate thread...")
         run_gradio_app()
     except Exception as e:
-        logger.error(f"❌ Erreur dans le thread Gradio: {e}")
+        logger.error(f"❌ Error in Gradio thread: {e}")
 
 
 def wait_for_api(timeout: int = 30) -> bool:
-    """Attend que l'API soit disponible"""
+    """Wait for the API to be available"""
     import requests
     from config import FASTAPI_HOST, FASTAPI_PORT
     
@@ -51,43 +51,43 @@ def wait_for_api(timeout: int = 30) -> bool:
         try:
             response = requests.get(api_url, timeout=5)
             if response.status_code == 200:
-                logger.info("✅ API FastAPI disponible")
+                logger.info("✅ FastAPI available")
                 return True
         except:
             time.sleep(1)
     
-    logger.error("❌ API FastAPI non disponible après attente")
+    logger.error("❌ FastAPI not available after waiting")
     return False
 
 
 def main():
-    """Fonction principale"""
+    """Main function"""
     parser = argparse.ArgumentParser(
-        description="API SeamlessM4T - Interface unifiée pour les services de traduction"
+        description="SeamlessM4T API - Unified interface for translation services"
     )
     
     parser.add_argument(
         "--api",
         action="store_true",
-        help="Lancer uniquement l'API FastAPI"
+        help="Run only FastAPI"
     )
     
     parser.add_argument(
         "--gradio",
         action="store_true",
-        help="Lancer uniquement l'application Gradio"
+        help="Run only Gradio application"
     )
     
     parser.add_argument(
         "--both",
         action="store_true",
-        help="Lancer à la fois l'API et l'application Gradio"
+        help="Run both API and Gradio application"
     )
     
     parser.add_argument(
         "--debug",
         action="store_true",
-        help="Activer le mode debug"
+        help="Enable debug mode"
     )
     
     args = parser.parse_args()
@@ -95,39 +95,39 @@ def main():
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
         logger.setLevel(logging.DEBUG)
-        logger.info("🐛 Mode debug activé")
+        logger.info("🐛 Debug mode enabled")
     
-    logger.info("🚀 Démarrage de l'API SeamlessM4T")
+    logger.info("🚀 Starting SeamlessM4T API")
     logger.info("=" * 50)
     
     if args.both or (not args.api and not args.gradio and not args.both):
-        # Lancer les deux par défaut
+        # Run both by default
         logger.info("🎯 Mode: API + Gradio")
         
-        # Lancer l'API dans un thread
+        # Run API in a thread
         api_thread = threading.Thread(target=run_api_in_thread, daemon=True)
         api_thread.start()
         
-        # Attendre que l'API soit disponible
+        # Wait for API to be available
         if wait_for_api():
-            # Lancer Gradio dans le thread principal
+            # Run Gradio in main thread
             run_gradio_app()
         else:
-            logger.error("❌ Impossible de lancer Gradio - API non disponible")
+            logger.error("❌ Cannot launch Gradio - API not available")
     
     elif args.api:
-        logger.info("🎯 Mode: API uniquement")
+        logger.info("🎯 Mode: API only")
         run_api()
     
     elif args.gradio:
-        logger.info("🎯 Mode: Gradio uniquement")
+        logger.info("🎯 Mode: Gradio only")
         
-        # Vérifier si l'API est disponible
-        if wait_for_api(5):  # Attendre 5 secondes max
+        # Check if API is available
+        if wait_for_api(5):  # Wait max 5 seconds
             run_gradio_app()
         else:
-            logger.error("❌ Impossible de lancer Gradio - API non disponible")
-            logger.info("💡 Veuillez lancer l'API d'abord avec: python main.py --api")
+            logger.error("❌ Cannot launch Gradio - API not available")
+            logger.info("💡 Please run the API first with: python main.py --api")
     
     else:
         parser.print_help()

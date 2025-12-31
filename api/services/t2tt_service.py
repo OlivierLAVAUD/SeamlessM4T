@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class T2TTService(SeamlessM4TService):
-    """Service pour la traduction textuelle Text-to-Text"""
+    """Service for text translation Text-to-Text"""
     
     def __init__(self):
         super().__init__()
@@ -33,10 +33,10 @@ class T2TTService(SeamlessM4TService):
         tgt_lang: str
     ) -> str:
         """
-        Traduit un texte d'une langue à une autre
+        Translate text from one language to another
         
         Args:
-            text: Texte à traduire
+            text: Text to translate
             src_lang: Langue source (code ISO 639-3)
             tgt_lang: Langue cible (code ISO 639-3)
             
@@ -66,7 +66,7 @@ class T2TTService(SeamlessM4TService):
                         segment_translation = self._translate_single_text(segment, src_lang, tgt_lang)
                         translated_segments.append(segment_translation)
                     except Exception as segment_error:
-                        logger.error(f"❌ Erreur de traduction du segment {i+1}: {segment_error}")
+                        logger.error(f"❌ Error translating segment {i+1}: {segment_error}")
                         translated_segments.append(f"[ERREUR: {str(segment_error)}]")
                 
                 return " ".join(translated_segments)
@@ -84,7 +84,7 @@ class T2TTService(SeamlessM4TService):
         src_lang: str, 
         tgt_lang: str
     ) -> str:
-        """Traduit un seul texte"""
+        """Translate a single text"""
         try:
             # Préparer les entrées pour le modèle
             inputs = self.processor(
@@ -122,7 +122,7 @@ class T2TTService(SeamlessM4TService):
             return ""
             
         except Exception as e:
-            logger.error(f"❌ Erreur de traduction textuelle: {e}")
+            logger.error(f"❌ Text translation error: {e}")
             raise
     
     def get_supported_languages(self) -> dict:

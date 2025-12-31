@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 SeamlessM4T S2ST - Speech-to-Speech Translation
-Traduction vocale spécialisée avec auto-détection GPU
+Specialized speech translation with auto-GPU detection
 
-Basé sur: https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2
+Based on: https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2
 """
 
 import gradio as gr
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class SeamlessM4T_S2ST:
-    """Traduction vocale spécialisée (Speech-to-Speech)"""
+    """Specialized speech translation (Speech-to-Speech)"""
     
     # Langues supportées par le modèle SeamlessM4T v2 pour S2ST
     S2ST_SUPPORTED_LANGUAGES = {
@@ -158,7 +158,7 @@ class SeamlessM4T_S2ST:
             raise
     
     def translate_speech(self, audio_path: str, src_lang: str, tgt_lang: str) -> str:
-        """Traduction vocale (S2ST) avec gestion des fichiers audio longs"""
+        """Speech translation (S2ST) with long audio file handling"""
         try:
             # Validation
             if src_lang not in self.ALL_SUPPORTED_LANGUAGES:
@@ -218,7 +218,7 @@ class SeamlessM4T_S2ST:
             raise
     
     def _translate_single_audio(self, audio_path: str, src_lang: str, tgt_lang: str) -> str:
-        """Traduction d'un seul fichier audio"""
+        """Translation of a single audio file"""
         try:
             # Charger et traiter l'audio
             audio_input, sample_rate = sf.read(audio_path)
@@ -319,7 +319,7 @@ class SeamlessM4T_S2ST:
             raise
     
     def _concatenate_audios(self, audio_paths: list) -> str:
-        """Concatenation de plusieurs fichiers audio"""
+        """Concatenation of multiple audio files"""
         try:
             all_audios = []
             first_sample_rate = None
@@ -351,7 +351,7 @@ class SeamlessM4T_S2ST:
             raise
     
     def _save_audio(self, audio: np.ndarray) -> str:
-        """Sauvegarde de l'audio traduit"""
+        """Save the translated audio"""
         os.makedirs("s2st_output", exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output_path = f"s2st_output/s2st_{timestamp}.wav"
@@ -360,14 +360,14 @@ class SeamlessM4T_S2ST:
 
 
 class SeamlessS2STApp:
-    """Interface Gradio pour SeamlessM4T S2ST"""
+    """Gradio interface for SeamlessM4T S2ST"""
     
     def __init__(self):
         self.s2st = SeamlessM4T_S2ST()
         self.languages = self.s2st.S2ST_SUPPORTED_LANGUAGES
     
     def s2st_interface(self, audio_path: str, src_lang: str, tgt_lang: str) -> str:
-        """Interface pour la traduction vocale"""
+        """Interface for speech translation"""
         try:
             output_path = self.s2st.translate_speech(audio_path, src_lang, tgt_lang)
             return output_path
@@ -389,19 +389,19 @@ class SeamlessS2STApp:
             return f"❌ Erreur inattendue: {error_msg}"
     
     def create_interface(self):
-        """Crée l'interface Gradio"""
+        """Create the Gradio interface"""
         
         with gr.Blocks(title="SeamlessM4T S2ST") as app:
             gr.Markdown("""
             # 🎤 SeamlessM4T Speech-to-Speech Translation (S2ST)
-            Traduction vocale spécialisée avec auto-détection GPU
+            Specialized speech translation with auto-GPU detection
             
             **Fonctionnalités:**
             - 🎤 Audio vers Audio (S2ST)
             - 🔥 Auto-détection GPU/CPU
             - 🌍 Support multilingue (36 langues)
             - 💾 Sauvegarde automatique
-            - ⏱️  Gestion des audios longs (découpage automatique)
+            - ⏱️  Long audio handling (automatic segmentation)
             
             **Langues supportées pour S2ST:** Arabic, Bengali, Catalan, Czech, Mandarin, Welsh, Danish, German, English, Estonian, Finnish, French, Hindi, Indonesian, Italian, Japanese, Kannada, Korean, Maltese, Dutch, Persian, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Swahili, Tamil, Telugu, Tagalog, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese
             
@@ -409,7 +409,7 @@ class SeamlessS2STApp:
             
             with gr.Row():
                 s2st_audio = gr.Audio(
-                    label="Audio à traduire",
+                    label="Audio to translate",
                     type="filepath",
                     sources=["microphone", "upload"]
                 )
@@ -426,8 +426,8 @@ class SeamlessS2STApp:
                     label="Langue cible"
                 )
             
-            s2st_btn = gr.Button("Traduire audio", variant="primary")
-            s2st_output = gr.Audio(label="Audio traduit", type="filepath")
+            s2st_btn = gr.Button("Translate audio", variant="primary")
+            s2st_output = gr.Audio(label="Translated audio", type="filepath")
             
             s2st_btn.click(
                 fn=self.s2st_interface,

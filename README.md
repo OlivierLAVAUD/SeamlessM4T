@@ -2,110 +2,113 @@
 
 
 
-**API unifiée pour les services de traduction SeamlessM4T v2**
+**Unified API for SeamlessM4T v2 translation services**
 
 ![SeamlessM4T Logo](https://raw.githubusercontent.com/facebookresearch/seamless_communication/main/docs/images/seamless_logo.png)
 
+![image.png]
 
+![SeamlessM4T](image.png)
 
 
 ## 📋 Description
 
-Cette API fournit une interface unifiée pour utiliser les capacités du modèle **SeamlessM4T v2** de Meta. Elle offre quatre services principaux de traduction et transcription multilingue :
+This API provides a unified interface to use the capabilities of Meta's **SeamlessM4T v2** model. It offers four main multilingual translation and transcription services:
 
-- **Speech-to-Speech Translation (S2ST)** : Traduction vocale directe
-- **Speech-to-Text Translation (S2TT)** : Transcription et traduction vocale
-- **Text-to-Speech Translation (T2ST)** : Synthèse vocale multilingue
-- **Text-to-Text Translation (T2TT)** : Traduction textuelle
+- **Speech-to-Speech Translation (S2ST)** : Direct speech translation
+- **Speech-to-Text Translation (S2TT)** : Speech transcription and translation
+- **Text-to-Speech Translation (T2ST)** : Multilingual speech synthesis
+- **Text-to-Text Translation (T2TT)** : Text translation
 
-## 🚀 Fonctionnalités
+## 🚀 Features
 
-### Services disponibles
+### Available Services
 
 | Service | Description | Endpoint |
 |---------|-------------|----------|
-| **S2ST** | Traduction vocale (audio → audio) | `POST /api/v1/s2st` |
-| **S2TT** | Transcription vocale (audio → texte) | `POST /api/v1/s2tt` |
-| **T2ST** | Synthèse vocale (texte → audio) | `POST /api/v1/t2st` |
-| **T2TT** | Traduction textuelle (texte → texte) | `POST /api/v1/t2tt` |
+| **S2ST** | Speech translation (audio → audio) | `POST /api/v1/s2st` |
+| **S2TT** | Speech transcription (audio → text) | `POST /api/v1/s2tt` |
+| **T2ST** | Speech synthesis (text → audio) | `POST /api/v1/t2st` |
+| **T2TT** | Text translation (text → text) | `POST /api/v1/t2tt` |
 
-### Langues supportées
+### Supported Languages
 
-L'API supporte **40+ langues** dont :
-- Français, Anglais, Espagnol, Allemand, Italien
-- Chinois, Japonais, Coréen, Arabe
-- Russe, Portugais, Hindi, et bien d'autres
+The API supports **40+ languages** including:
+- French, English, Spanish, German, Italian
+- Chinese, Japanese, Korean, Arabic
+- Russian, Portuguese, Hindi, and many more
 
-Consultez l'endpoint `/api/v1/languages` pour la liste complète.
+Check the `/api/v1/languages` endpoint for the complete list.
 
 ## 🛠️ Installation
 
-### Prérequis
+### Prerequisites
 
-- **Python** : 3.8+ (3.10 recommandé)
-- **CUDA** : 12.6+ (optimisé pour cette version)
-- **Drivers NVIDIA** : 561.17+ (compatible avec votre configuration)
-- **RAM** : 16GB+ (32GB+ recommandé pour GPU)
-- **VRAM** : 24GB+ (nécessaire pour le modèle large)
-- **Espace disque** : 10GB+ (20GB+ recommandé pour les caches)
-- **NVIDIA Container Toolkit** : Pour le support Docker GPU
+- **Python** : 3.8+ (3.10 recommended)
+- **CUDA** : 12.6+ (optimized for this version)
+- **NVIDIA Drivers** : 561.17+ (compatible with your setup)
+- **RAM** : 16GB+ (32GB+ recommended for GPU)
+- **VRAM** : 24GB+ (required for large model)
+- **Disk space** : 10GB+ (20GB+ recommended for caches)
+- **NVIDIA Container Toolkit** : For Docker GPU support
 
-### Installation du NVIDIA Container Toolkit
+### NVIDIA Container Toolkit Installation
 
 ```bash
-# Ajouter le dépôt NVIDIA
+# Add NVIDIA repository
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
 && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
 && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
-# Installer le toolkit
+# Install toolkit
 sudo apt-get update && sudo apt-get install -y nvidia-docker2
 sudo systemctl restart docker
 
-# Vérifier l'installation
+# Verify installation
 docker run --rm --gpus all nvidia/cuda:12.6.0-base-ubuntu22.04 nvidia-smi
 ```
 
-### Étapes d'installation
+### Installation Steps
 
 ```bash
-# Cloner le dépôt
+# Clone the repository
 git clone https://github.com/votre-repo/seamlessm4t_api.git
 cd seamlessm4t_api
 
-# Créer un environnement virtuel (recommandé)
-python -m venv .venv
+# Create virtual environment (recommended)
+uv venv --python 3.13.0
 source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate  # Windows
 
-# Installer les dépendances
-pip install -r requirements.txt
+# Install dependencies
+uv pip install git+https://github.com/huggingface/transformers.git sentencepiece
+uv sync
 
-# Lancer l'API
-python main.py
+# Launch the API
+uv run main.py
 ```
 
-## 📡 Utilisation
+## 📡 Usage
 
-### Lancement de l'API
+### Launching the API
 
 ```bash
-# Lancer uniquement l'API FastAPI
+# Launch only FastAPI
 python main.py --api
 
-# Lancer uniquement l'interface Gradio
+# Launch only Gradio interface
 python main.py --gradio
 
-# Lancer les deux (par défaut)
+# Launch both (default)
 python main.py --both
 
-# Mode debug
+# Debug mode
 python main.py --debug
 ```
 
-### Exemples d'utilisation
+### Usage Examples
 
-#### 1. Traduction vocale (S2ST)
+#### 1. Speech Translation (S2ST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/s2st" \
@@ -114,7 +117,7 @@ curl -X POST "http://localhost:8000/api/v1/s2st" \
   -F "tgt_lang=eng"
 ```
 
-#### 2. Transcription vocale (S2TT)
+#### 2. Speech Transcription (S2TT)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/s2tt" \
@@ -123,7 +126,7 @@ curl -X POST "http://localhost:8000/api/v1/s2tt" \
   -F "tgt_lang=eng"
 ```
 
-#### 3. Synthèse vocale (T2ST)
+#### 3. Speech Synthesis (T2ST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/t2st" \
@@ -131,7 +134,7 @@ curl -X POST "http://localhost:8000/api/v1/t2st" \
   -d '{"text": "Bonjour le monde", "src_lang": "fra", "tgt_lang": "eng"}'
 ```
 
-#### 4. Traduction textuelle (T2TT)
+#### 4. Text Translation (T2TT)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/t2tt" \
@@ -139,113 +142,113 @@ curl -X POST "http://localhost:8000/api/v1/t2tt" \
   -d '{"text": "Bonjour le monde", "src_lang": "fra", "tgt_lang": "eng"}'
 ```
 
-## 🎯 Interface Gradio
+## 🎯 Gradio Interface
 
-L'API inclut une interface utilisateur Gradio pour tester facilement toutes les fonctionnalités :
+The API includes a Gradio user interface to easily test all features:
 
 ```bash
-# Accéder à l'interface
+# Access the interface
 http://localhost:7860
 ```
 
-![Interface Gradio](docs/gradio_interface.png)
+![Gradio Interface](docs/gradio_interface.png)
 
-## 📊 Performances
+## 📊 Performance
 
-### Configuration recommandée
+### Recommended Configuration
 
-- **GPU** : NVIDIA RTX 3090/4090 ou A100 (avec drivers 561.17+)
-- **CUDA** : Version 12.6+ (optimisé pour cette version)
-- **CPU** : 8+ cœurs (16+ recommandé pour les charges lourdes)
-- **RAM** : 32GB+ (64GB+ recommandé pour les traitements par lots)
-- **VRAM** : 24GB+ (nécessaire pour le modèle seamless-m4t-v2-large)
+- **GPU** : NVIDIA RTX 3090/4090 or A100 (with drivers 561.17+)
+- **CUDA** : Version 12.6+ (optimized for this version)
+- **CPU** : 8+ cores (16+ recommended for heavy loads)
+- **RAM** : 32GB+ (64GB+ recommended for batch processing)
+- **VRAM** : 24GB+ (required for seamless-m4t-v2-large model)
 
-### Optimisations
+### Optimizations
 
-- **Chargement unique du modèle** : Le modèle est chargé une seule fois et partagé entre tous les services via un singleton
-- **Gestion GPU optimisée** : Nettoyage automatique de la mémoire GPU après 5 requêtes
-- **Traitement par segments** : Gestion automatique des audios/textes longs (>60s ou >5000 caractères)
-- **Support CUDA 12.6** : Optimisations spécifiques pour les dernières architectures GPU
-- **Docker optimisé** : Configuration spécialement adaptée pour CUDA 12.6 et drivers 561.17+
+- **Single model loading** : The model is loaded once and shared across all services via singleton
+- **Optimized GPU management** : Automatic GPU memory cleanup after 5 requests
+- **Segment processing** : Automatic handling of long audios/texts (>60s or >5000 characters)
+- **CUDA 12.6 support** : Specific optimizations for latest GPU architectures
+- **Optimized Docker** : Configuration specially adapted for CUDA 12.6 and drivers 561.17+
 
-### Benchmarks (estimations)
+### Benchmarks (estimates)
 
-| Configuration | Temps de chargement | Latence moyenne | Débit |
+| Configuration | Loading time | Average latency | Throughput |
 |---------------|-------------------|-----------------|--------|
-| RTX 3090 (24GB) | ~15-20s | ~2-5s/requête | ~12 req/min |
-| RTX 4090 (24GB) | ~10-15s | ~1-3s/requête | ~20 req/min |
-| A100 (40GB) | ~8-12s | ~0.5-2s/requête | ~30 req/min |
+| RTX 3090 (24GB) | ~15-20s | ~2-5s/request | ~12 req/min |
+| RTX 4090 (24GB) | ~10-15s | ~1-3s/request | ~20 req/min |
+| A100 (40GB) | ~8-12s | ~0.5-2s/request | ~30 req/min |
 
 ## 🔧 Configuration
 
-Modifiez le fichier `config.py` pour personnaliser :
+Modify the `config.py` file to customize:
 
 ```python
 # Ports
 FASTAPI_PORT = 8000
 GRADIO_SERVER_PORT = 7860
 
-# Modèle
+# Model
 MODEL_NAME = "facebook/seamless-m4t-v2-large"
 SAMPLING_RATE = 16000
 
-# Limites
-MAX_AUDIO_DURATION = 60  # secondes
-MAX_TEXT_LENGTH = 5000   # caractères
+# Limits
+MAX_AUDIO_DURATION = 60  # seconds
+MAX_TEXT_LENGTH = 5000   # characters
 
 # GPU
 USE_GPU = True
-GPU_CLEANUP_INTERVAL = 5  # Nettoyer après N requêtes
+GPU_CLEANUP_INTERVAL = 5  # Cleanup after N requests
 ```
 
 ## 🧪 Tests
 
 ```bash
-# Tester l'état de santé
+# Test health status
 curl http://localhost:8000/api/v1/health
 
-# Lister les langues supportées
+# List supported languages
 curl http://localhost:8000/api/v1/languages
 
-# Accéder à la documentation Swagger
+# Access Swagger documentation
 http://localhost:8000/docs
 
-# Accéder à la documentation ReDoc
+# Access ReDoc documentation
 http://localhost:8000/redoc
 ```
 
-## 📦 Déploiement
+## 📦 Deployment
 
-### Avec Docker (recommandé)
+### With Docker (recommended)
 
 ```bash
-# Construire l'image
+# Build the image
 docker-compose build
 
-# Lancer les conteneurs
+# Start containers
 docker-compose up -d
 
-# Vérifier les logs
+# Check logs
 docker-compose logs -f
 
-# Arrêter les conteneurs
+# Stop containers
 docker-compose down
 ```
 
-**Configuration requise pour Docker**:
-- NVIDIA Container Toolkit installé
-- Drivers NVIDIA 561.17+ (recommandé)
-- CUDA 12.6+ (optimisé pour cette version)
+**Docker requirements**:
+- NVIDIA Container Toolkit installed
+- NVIDIA drivers 561.17+ (recommended)
+- CUDA 12.6+ (optimized for this version)
 - Docker 20.10+
 
-**Fonctionnalités Docker**:
-- Support GPU complet avec CUDA 12.6
-- Environnement Python isolé
-- Persistance des fichiers audio et résultats
-- Health checks intégrés
-- Configuration optimisée pour les performances
+**Docker features**:
+- Full GPU support with CUDA 12.6
+- Isolated Python environment
+- Persistence of audio files and results
+- Built-in health checks
+- Performance-optimized configuration
 
-### Avec systemd
+### With systemd
 
 ```ini
 # /etc/systemd/system/seamlessm4t-api.service
@@ -266,27 +269,27 @@ WantedBy=multi-user.target
 
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! Veuillez suivre ces étapes :
+Contributions are welcome! Please follow these steps:
 
-1. Forker le projet
-2. Créer une branche (`git checkout -b feature/ma-fonctionnalite`)
-3. Commiter vos changements (`git commit -m 'Ajout de ma fonctionnalité'`)
-4. Pusher la branche (`git push origin feature/ma-fonctionnalite`)
-5. Ouvrir une Pull Request
+1. Fork the project
+2. Create a branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'Add my feature'`)
+4. Push the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
 
-## 📜 Licence
+## 📜 License
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+This project is licensed under MIT. See the `LICENSE` file for details.
 
 ## 📞 Support
 
-Pour toute question ou problème :
-- Ouvrir une issue sur GitHub
-- Consulter la [documentation officielle SeamlessM4T](https://github.com/facebookresearch/seamless_communication)
+For any questions or issues:
+- Open an issue on GitHub
+- Check the [official SeamlessM4T documentation](https://github.com/facebookresearch/seamless_communication)
 
-## 🎓 Exemples avancés
+## 🎓 Advanced Examples
 
-### Traitement par lots
+### Batch Processing
 
 ```python
 import requests
@@ -310,12 +313,12 @@ def batch_translate(audio_files, src_lang, tgt_lang):
     
     return results
 
-# Utilisation
+# Usage
 files = ['audio1.wav', 'audio2.wav', 'audio3.wav']
 results = batch_translate(files, 'fra', 'eng')
 ```
 
-### Intégration avec d'autres services
+### Integration with other services
 
 ```python
 from fastapi import FastAPI
@@ -328,10 +331,10 @@ SEAMLESS_API_URL = "http://localhost:8000/api/v1"
 @app.post("/translate-audio")
 async def translate_audio(audio_url: str, src_lang: str, tgt_lang: str):
     async with httpx.AsyncClient() as client:
-        # Télécharger l'audio
+        # Download audio
         audio_response = await client.get(audio_url)
         
-        # Envoyer à SeamlessM4T API
+        # Send to SeamlessM4T API
         files = {'audio_file': audio_response.content}
         data = {'src_lang': src_lang, 'tgt_lang': tgt_lang}
         
@@ -346,13 +349,13 @@ async def translate_audio(audio_url: str, src_lang: str, tgt_lang: str):
 
 ## 🚨 Limitations
 
-- Durée maximale des audios : 60 secondes (découpage automatique pour les audios plus longs)
-- Longueur maximale des textes : 5000 caractères (découpage automatique pour les textes plus longs)
-- Nécessite une connexion internet pour le téléchargement initial du modèle
+- Maximum audio duration: 60 seconds (automatic segmentation for longer audios)
+- Maximum text length: 5000 characters (automatic segmentation for longer texts)
+- Requires internet connection for initial model download
 
-## 📊 Métriques
+## 📊 Metrics
 
-L'API expose des métriques de santé et d'utilisation :
+The API exposes health and usage metrics:
 
 ```json
 {
@@ -374,22 +377,22 @@ L'API expose des métriques de santé et d'utilisation :
 }
 ```
 
-## 🔍 Dépannage
+## 🔍 Troubleshooting
 
-### Problèmes courants
+### Common Issues
 
-**1. Erreur de mémoire GPU**
-- Solution : Réduire `MAX_AUDIO_DURATION` ou utiliser un GPU avec plus de VRAM
+**1. GPU memory error**
+- Solution: Reduce `MAX_AUDIO_DURATION` or use a GPU with more VRAM
 
-**2. Modèle non chargé**
-- Solution : Vérifier la connexion internet et l'espace disque
+**2. Model not loaded**
+- Solution: Check internet connection and disk space
 
-**3. Erreurs de langue non supportée**
-- Solution : Vérifier les codes de langue avec `/api/v1/languages`
+**3. Unsupported language errors**
+- Solution: Check language codes with `/api/v1/languages`
 
 ### Logs
 
-Les logs sont disponibles dans la console et peuvent être redirigés vers un fichier :
+Logs are available in the console and can be redirected to a file:
 
 ```bash
 python main.py > api.log 2>&1 &
@@ -397,16 +400,16 @@ python main.py > api.log 2>&1 &
 
 ## 📈 Roadmap
 
-- Ajout de l'authentification JWT
-- Support des websockets pour le streaming
-- Intégration avec d'autres modèles de traduction
-- Optimisation pour les déploiements serverless
+- Add JWT authentication
+- Websocket support for streaming
+- Integration with other translation models
+- Optimization for serverless deployments
 
-## 🙏 Remerciements
+## 🙏 Acknowledgments
 
-- L'équipe Facebook Research pour le modèle SeamlessM4T
-- La communauté HuggingFace pour les outils Transformers
-- Tous les contributeurs open source
+- Facebook Research team for the SeamlessM4T model
+- HuggingFace community for Transformers tools
+- All open source contributors
 
 ---
 

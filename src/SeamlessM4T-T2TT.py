@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 SeamlessM4T T2TT - Text-to-Text Translation
-Traduction textuelle spécialisée avec auto-détection GPU
+Specialized text translation with auto-GPU detection
 
-Basé sur: https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2
+Based on: https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2
 """
 
 import gradio as gr
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class SeamlessM4T_T2TT:
-    """Traduction textuelle (Text-to-Text)"""
+    """Text translation (Text-to-Text)"""
     
     # Langues supportées par le modèle SeamlessM4T v2 pour T2TT
     # Selon la documentation, T2TT supporte les mêmes langues que S2TT
@@ -159,7 +159,7 @@ class SeamlessM4T_T2TT:
             raise
     
     def translate_text(self, text: str, src_lang: str, tgt_lang: str) -> str:
-        """Traduction textuelle (T2TT) avec gestion des erreurs"""
+        """Text translation (T2TT) with error handling"""
         try:
             # Incrémenter le compteur de requêtes
             self.request_count += 1
@@ -210,7 +210,7 @@ class SeamlessM4T_T2TT:
             raise
     
     def _translate_single_text(self, text: str, src_lang: str, tgt_lang: str) -> str:
-        """Traduction d'un seul texte"""
+        """Translation of a single text"""
         try:
             # Préparer les entrées pour le modèle (T2TT utilise text_inputs)
             inputs = self.processor(
@@ -273,7 +273,7 @@ class SeamlessM4T_T2TT:
                 elif isinstance(text, list):
                     text = ""
                 
-                logger.info(f"Texte traduit: {text}")
+                logger.info(f"Translated text: {text}")
                 return text
             except Exception as e:
                 logger.error(f"Erreur de décodage: {e}")
@@ -289,14 +289,14 @@ class SeamlessM4T_T2TT:
 
 
 class SeamlessT2TTApp:
-    """Interface Gradio pour SeamlessM4T T2TT"""
+    """Gradio interface for SeamlessM4T T2TT"""
     
     def __init__(self):
         self.t2tt = SeamlessM4T_T2TT()
         self.languages = self.t2tt.T2TT_SUPPORTED_LANGUAGES
     
     def t2tt_interface(self, text: str, src_lang: str, tgt_lang: str) -> str:
-        """Interface pour la traduction textuelle"""
+        """Interface for text translation"""
         try:
             translation_output = self.t2tt.translate_text(text, src_lang, tgt_lang)
             return translation_output
@@ -320,18 +320,18 @@ class SeamlessT2TTApp:
                 self.t2tt._cleanup_gpu_memory()
     
     def create_interface(self):
-        """Crée l'interface Gradio"""
+        """Create the Gradio interface"""
         
         with gr.Blocks(title="SeamlessM4T T2TT") as app:
             gr.Markdown("""
             # 📝 SeamlessM4T Text-to-Text Translation (T2TT)
-            Traduction textuelle spécialisée avec auto-détection GPU
+            Specialized text translation with auto-GPU detection
             
             **Fonctionnalités:**
             - 📝 Texte vers Texte (T2TT)
             - 🔥 Auto-détection GPU/CPU
             - 🌍 Support multilingue (36 langues)
-            - 📄 Gestion des textes longs (découpage automatique)
+            - 📄 Long text handling (automatic segmentation)
             - 🧹 Nettoyage automatique de la mémoire GPU
             
             **Langues supportées pour T2TT:** Arabic, Bengali, Catalan, Czech, Mandarin, Welsh, Danish, German, English, Estonian, Finnish, French, Hindi, Indonesian, Italian, Japanese, Kannada, Korean, Maltese, Dutch, Persian, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Swahili, Tamil, Telugu, Tagalog, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese
@@ -340,9 +340,9 @@ class SeamlessT2TTApp:
             
             with gr.Row():
                 t2tt_text = gr.Textbox(
-                    label="Texte à traduire",
+                    label="Text to translate",
                     lines=5,
-                    placeholder="Entrez le texte à traduire ici..."
+                    placeholder="Enter text to translate here..."
                 )
             
             with gr.Row():
@@ -357,8 +357,8 @@ class SeamlessT2TTApp:
                     label="Langue cible"
                 )
             
-            t2tt_btn = gr.Button("Traduire texte", variant="primary")
-            t2tt_output = gr.Textbox(label="Texte traduit", lines=5)
+            t2tt_btn = gr.Button("Translate text", variant="primary")
+            t2tt_output = gr.Textbox(label="Translated text", lines=5)
             
             t2tt_btn.click(
                 fn=self.t2tt_interface,

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 SeamlessM4T S2TT - Speech-to-Text Translation
-Transcription et traduction vocale avec auto-détection GPU
+Speech transcription and translation with auto-GPU detection
 
-Basé sur: https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2
+Based on: https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2
 """
 
 import gradio as gr
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class SeamlessM4T_S2TT:
-    """Transcription et traduction vocale (Speech-to-Text)"""
+    """Speech transcription and translation (Speech-to-Text)"""
     
     # Langues supportées par le modèle SeamlessM4T v2 pour S2TT
     S2TT_SUPPORTED_LANGUAGES = {
@@ -167,7 +167,7 @@ class SeamlessM4T_S2TT:
             raise
     
     def transcribe_speech(self, audio_path: str, src_lang: str, tgt_lang: str) -> str:
-        """Transcription et traduction vocale (S2TT) avec gestion des audios longs"""
+        """Speech transcription and translation (S2TT) with long audio handling"""
         try:
             # Incrémenter le compteur de requêtes
             self.request_count += 1
@@ -351,14 +351,14 @@ class SeamlessM4T_S2TT:
 
 
 class SeamlessS2TTApp:
-    """Interface Gradio pour SeamlessM4T S2TT"""
+    """Gradio interface for SeamlessM4T S2TT"""
     
     def __init__(self):
         self.s2tt = SeamlessM4T_S2TT()
         self.languages = self.s2tt.S2TT_SUPPORTED_LANGUAGES
     
     def s2tt_interface(self, audio_path: str, src_lang: str, tgt_lang: str) -> str:
-        """Interface pour la transcription vocale"""
+        """Interface for speech transcription"""
         try:
             text_output = self.s2tt.transcribe_speech(audio_path, src_lang, tgt_lang)
             return text_output
@@ -382,19 +382,19 @@ class SeamlessS2TTApp:
                 self.s2tt._cleanup_gpu_memory()
     
     def create_interface(self):
-        """Crée l'interface Gradio"""
+        """Create the Gradio interface"""
         
         with gr.Blocks(title="SeamlessM4T S2TT") as app:
             gr.Markdown("""
             # 🎤 SeamlessM4T Speech-to-Text Translation (S2TT)
-            Transcription et traduction vocale avec auto-détection GPU
+            Speech transcription and translation with auto-GPU detection
             
             **Fonctionnalités:**
             - 🎤 Audio vers Texte (S2TT)
             - 🔥 Auto-détection GPU/CPU
             - 🌍 Support multilingue (36 langues)
             - 📝 Transcription + traduction
-            - ⏱️  Gestion des audios longs (découpage automatique)
+            - ⏱️  Long audio handling (automatic segmentation)
             
             **Langues supportées pour S2TT:** Arabic, Bengali, Catalan, Czech, Mandarin, Welsh, Danish, German, English, Estonian, Finnish, French, Hindi, Indonesian, Italian, Japanese, Kannada, Korean, Maltese, Dutch, Persian, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Swahili, Tamil, Telugu, Tagalog, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese
 
@@ -402,7 +402,7 @@ class SeamlessS2TTApp:
             
             with gr.Row():
                 s2tt_audio = gr.Audio(
-                    label="Audio à transcrire",
+                    label="Audio to transcribe",
                     type="filepath",
                     sources=["microphone", "upload"]
                 )
@@ -419,8 +419,8 @@ class SeamlessS2TTApp:
                     label="Langue cible"
                 )
             
-            s2tt_btn = gr.Button("Transcrire audio", variant="primary")
-            s2tt_output = gr.Textbox(label="Texte transcrit", lines=5)
+            s2tt_btn = gr.Button("Transcribe audio", variant="primary")
+            s2tt_output = gr.Textbox(label="Transcribed text", lines=5)
             
             s2tt_btn.click(
                 fn=self.s2tt_interface,

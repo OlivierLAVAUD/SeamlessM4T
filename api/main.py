@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-API FastAPI pour SeamlessM4T
+FastAPI for SeamlessM4T
 """
 
 import logging
@@ -128,7 +128,7 @@ async def speech_to_speech(
     tgt_lang: str = Form(...),
     audio_format: Optional[str] = Form("wav")
 ):
-    """Traduit un fichier audio d'une langue à une autre (Speech-to-Speech)"""
+    """Translate an audio file from one language to another (Speech-to-Speech)"""
     try:
         # Sauvegarder le fichier audio
         audio_path = AUDIO_DIR / f"upload_{os.urandom(4).hex()}.wav"
@@ -153,7 +153,7 @@ async def speech_to_speech(
         # Retourner le résultat
         return {
             "success": True,
-            "message": "Traduction audio réussie",
+            "message": "Audio translation successful",
             "result": str(result_path),
             "audio_url": f"/output_files/{result_path.name}",
             "duration": None  # TODO: Calculer la durée
@@ -164,7 +164,7 @@ async def speech_to_speech(
             status_code=500,
             content={
                 "success": False,
-                "message": "Erreur de traduction audio",
+                "message": "Audio translation error",
                 "error": str(e),
                 "audio_url": None
             }
@@ -177,7 +177,7 @@ async def speech_to_text(
     src_lang: str = Form(...),
     tgt_lang: str = Form(...)
 ):
-    """Transcrit et traduit un fichier audio en texte (Speech-to-Text)"""
+    """Transcribe and translate an audio file to text (Speech-to-Text)"""
     try:
         # Sauvegarder le fichier audio
         audio_path = AUDIO_DIR / f"upload_{os.urandom(4).hex()}.wav"
@@ -262,7 +262,7 @@ async def text_to_speech(
 async def text_to_text(
     request_data: T2TTRequest
 ):
-    """Traduit un texte d'une langue à une autre (Text-to-Text)"""
+    """Translate text from one language to another (Text-to-Text)"""
     try:
         # Valider la requête
         if not request_data.text:
@@ -278,7 +278,7 @@ async def text_to_text(
         # Retourner le résultat
         return {
             "success": True,
-            "message": "Traduction textuelle réussie",
+            "message": "Text translation successful",
             "result": text_result,
             "text": text_result,
             "character_count": len(text_result)
@@ -289,7 +289,7 @@ async def text_to_text(
             status_code=500,
             content={
                 "success": False,
-                "message": "Erreur de traduction textuelle",
+                "message": "Text translation error",
                 "error": str(e),
                 "text": None
             }

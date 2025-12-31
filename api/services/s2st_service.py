@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 class S2STService(SeamlessM4TService):
-    """Service pour la traduction Speech-to-Speech"""
+    """Service for Speech-to-Speech translation"""
     
     def __init__(self):
         super().__init__()
@@ -40,13 +40,13 @@ class S2STService(SeamlessM4TService):
         output_path: Optional[Path] = None
     ) -> Path:
         """
-        Traduit un fichier audio d'une langue à une autre
+        Translate an audio file from one language to another
         
         Args:
-            audio_path: Chemin vers le fichier audio source
-            src_lang: Langue source (code ISO 639-3)
-            tgt_lang: Langue cible (code ISO 639-3)
-            output_path: Chemin de sortie (optionnel)
+            audio_path: Path to the source audio file
+            src_lang: Source language (ISO 639-3 code)
+            tgt_lang: Target language (ISO 639-3 code)
+            output_path: Output path (optional)
             
         Returns:
             Chemin vers le fichier audio traduit
@@ -99,7 +99,7 @@ class S2STService(SeamlessM4TService):
         tgt_lang: str,
         output_path: Optional[Path] = None
     ) -> Path:
-        """Traduit un seul fichier audio"""
+        """Translate a single audio file"""
         try:
             # Charger et préparer l'audio
             audio_data, sample_rate = load_audio_file(audio_path)
@@ -115,7 +115,7 @@ class S2STService(SeamlessM4TService):
                 return_tensors="pt"
             ).to(self.device)
             
-            # Générer la traduction
+            # Generate the translation
             with torch.no_grad():
                 output = self.model.generate(**inputs, tgt_lang=tgt_lang)
             
@@ -137,7 +137,7 @@ class S2STService(SeamlessM4TService):
             return output_path
             
         except Exception as e:
-            logger.error(f"❌ Erreur de traduction audio: {e}")
+            logger.error(f"❌ Audio translation error: {e}")
             raise
     
     def get_supported_languages(self) -> dict:

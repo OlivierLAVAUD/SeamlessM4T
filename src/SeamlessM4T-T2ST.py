@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Seamless TTS v1 - Synthèse vocale spécialisée avec auto-détection GPU
+Seamless TTS v1 - Specialized speech synthesis with auto-GPU detection
 """
 
 import gradio as gr
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class SeamlessM4T:
-    """Synthèse vocale spécialisée"""
+    """Specialized speech synthesis"""
     
     # Langues supportées par le modèle SeamlessM4T v2 pour la synthèse vocale
     TTS_SUPPORTED_LANGUAGES = {
@@ -331,7 +331,7 @@ class SeamlessM4T:
 
 
 class SeamlessTTSApp:
-    """Interface Gradio pour SeamlessM4T"""
+    """Gradio interface for SeamlessM4T"""
     
     def __init__(self):
         self.tts = SeamlessM4T()
@@ -339,7 +339,7 @@ class SeamlessTTSApp:
         self.languages = self.tts.TTS_SUPPORTED_LANGUAGES
     
     def tts_interface(self, text: str, src_lang: str, tgt_lang: str) -> str:
-        """Interface pour la synthèse vocale"""
+        """Interface for speech synthesis"""
         try:
             output_path = self.tts.generate_speech(text, src_lang, tgt_lang)
             return output_path
@@ -362,12 +362,12 @@ class SeamlessTTSApp:
             return f"❌ Erreur inattendue: {error_msg}"
     
     def create_interface(self):
-        """Crée l'interface Gradio"""
+        """Create the Gradio interface"""
         
         with gr.Blocks(title="Seamless TTS v1") as app:
             gr.Markdown("""
             # 🎤 SeamlessM4T  Text-to-speech translation (T2ST)        
-            Synthèse vocale spécialisée avec auto-détection GPU
+            Specialized speech synthesis with auto-GPU detection
             
             **Fonctionnalités:**
             - 🎤 Texte vers Parole (TTS)
@@ -380,7 +380,7 @@ class SeamlessTTSApp:
             
             with gr.Row():
                 tts_text = gr.Textbox(
-                    label="Texte à synthétiser",
+                    label="Text to synthesize",
                     value="Bonjour le monde",
                     lines=3
                 )
@@ -397,8 +397,8 @@ class SeamlessTTSApp:
                     label="Langue cible"
                 )
             
-            tts_btn = gr.Button("Générer audio", variant="primary")
-            tts_output = gr.Audio(label="Audio généré", type="filepath")
+            tts_btn = gr.Button("Generate audio", variant="primary")
+            tts_output = gr.Audio(label="Generated audio", type="filepath")
             
             tts_btn.click(
                 fn=self.tts_interface,

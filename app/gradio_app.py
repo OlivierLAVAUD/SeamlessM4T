@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Application Gradio pour tester l'API SeamlessM4T
+Gradio application to test SeamlessM4T API
 """
 
 import gradio as gr
@@ -89,9 +89,9 @@ def s2st_translation(
     src_lang: str,
     tgt_lang: str
 ) -> Tuple[Optional[str], Optional[str]]:
-    """Traduction Speech-to-Speech"""
+    """Speech-to-Speech Translation"""
     if not check_api_health():
-        return None, "❌ API non disponible"
+        return None, "❌ API not available"
     
     try:
         # Préparer les fichiers et données
@@ -113,7 +113,7 @@ def s2st_translation(
                     with open(output_file, "wb") as f:
                         f.write(audio_response.content)
                     return str(output_file), None
-            return None, "✅ Traduction réussie mais impossible de télécharger l'audio"
+            return None, "✅ Translation successful but unable to download audio"
         else:
             error = result.get("error", "Erreur inconnue")
             return None, f"❌ {error}"
@@ -129,7 +129,7 @@ def s2tt_translation(
 ) -> Tuple[Optional[str], Optional[str]]:
     """Transcription Speech-to-Text"""
     if not check_api_health():
-        return None, "❌ API non disponible"
+        return None, "❌ API not available"
     
     try:
         files = {"audio_file": open(audio_file, "rb")}
@@ -158,7 +158,7 @@ def t2st_translation(
 ) -> Tuple[Optional[str], Optional[str]]:
     """Synthèse vocale Text-to-Speech"""
     if not check_api_health():
-        return None, "❌ API non disponible"
+        return None, "❌ API not available"
     
     try:
         json_data = {
@@ -193,9 +193,9 @@ def t2tt_translation(
     src_lang: str,
     tgt_lang: str
 ) -> Tuple[Optional[str], Optional[str]]:
-    """Traduction textuelle Text-to-Text"""
+    """Text translation Text-to-Text"""
     if not check_api_health():
-        return None, "❌ API non disponible"
+        return None, "❌ API not available"
     
     try:
         json_data = {
@@ -222,11 +222,11 @@ def get_api_status() -> str:
     if check_api_health():
         return "🟢 API disponible et opérationnelle"
     else:
-        return "🔴 API non disponible"
+        return "🔴 API not available"
 
 
 def create_gradio_interface():
-    """Crée l'interface Gradio"""
+    """Create the Gradio interface"""
     
     # Récupérer les langues supportées
     languages = get_supported_languages()
@@ -237,7 +237,7 @@ def create_gradio_interface():
         gr.Markdown(f"""
         # 🎤 {GRADIO_TITLE}
         
-        **Interface de test pour l'API SeamlessM4T v2**
+        **Test interface for SeamlessM4T v2 API**
         
         {get_api_status()}
         
@@ -256,7 +256,7 @@ def create_gradio_interface():
         with gr.Tabs():
             # Onglet S2ST
             with gr.Tab("🎤 Speech-to-Speech (S2ST)"):
-                gr.Markdown("### Traduction vocale (Audio → Audio)")
+                gr.Markdown("### Speech translation (Audio → Audio)")
                 
                 with gr.Row():
                     s2st_audio = gr.Audio(
@@ -276,7 +276,7 @@ def create_gradio_interface():
                         choices=language_codes,
                         value="eng",
                         label="Langue cible",
-                        info="Sélectionnez la langue de traduction"
+                        info="Select the translation language"
                     )
                 
                 s2st_btn = gr.Button("Traduire audio", variant="primary")
@@ -358,7 +358,7 @@ def create_gradio_interface():
             
             # Onglet T2TT
             with gr.Tab("📄 Text-to-Text (T2TT)"):
-                gr.Markdown("### Traduction textuelle (Texte → Texte)")
+                gr.Markdown("### Text translation (Text → Text)")
                 
                 with gr.Row():
                     t2tt_text = gr.Textbox(
@@ -427,7 +427,7 @@ def create_gradio_interface():
                 ---
                 
                 **À propos:**
-                Cette interface permet de tester toutes les fonctionnalités de l'API SeamlessM4T v2.
+                This interface allows you to test all features of the SeamlessM4T v2 API.
                 Les requêtes sont envoyées à l'API FastAPI qui effectue le traitement réel.
                 
                 © 2024 SeamlessM4T API

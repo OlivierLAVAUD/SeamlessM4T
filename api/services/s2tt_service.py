@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class S2TTService(SeamlessM4TService):
-    """Service pour la transcription et traduction Speech-to-Text"""
+    """Service for speech transcription and translation Speech-to-Text"""
     
     def __init__(self):
         super().__init__()
@@ -37,10 +37,10 @@ class S2TTService(SeamlessM4TService):
         tgt_lang: str
     ) -> str:
         """
-        Transcrit et traduit un fichier audio en texte
+        Transcribe and translate an audio file to text
         
         Args:
-            audio_path: Chemin vers le fichier audio source
+            audio_path: Path to the source audio file
             src_lang: Langue source (code ISO 639-3)
             tgt_lang: Langue cible (code ISO 639-3)
             
@@ -93,7 +93,7 @@ class S2TTService(SeamlessM4TService):
         src_lang: str, 
         tgt_lang: str
     ) -> str:
-        """Transcrit un seul fichier audio"""
+        """Transcribe a single audio file"""
         try:
             # Charger et préparer l'audio
             audio_data, sample_rate = load_audio_file(audio_path)
@@ -109,7 +109,7 @@ class S2TTService(SeamlessM4TService):
                 return_tensors="pt"
             ).to(self.device)
             
-            # Générer la transcription
+            # Generate the transcription
             with torch.no_grad():
                 output = self.model.generate(
                     **inputs,

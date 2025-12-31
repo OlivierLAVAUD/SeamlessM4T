@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 """
-Configuration générale pour l'API SeamlessM4T
+General configuration for SeamlessM4T API
 """
 
 import os
 from pathlib import Path
 
-# Configuration de base
+# Base configuration
 APP_NAME = "SeamlessM4T API"
 APP_VERSION = "1.0.0"
-APP_DESCRIPTION = "API unifiée pour les services SeamlessM4T v2"
+APP_DESCRIPTION = "Unified API for SeamlessM4T v2 services"
 
-# Chemins
+# Paths
 BASE_DIR = Path(__file__).parent
 AUDIO_DIR = BASE_DIR / "audio_files"
 OUTPUT_DIR = BASE_DIR / "output_files"
 
-# Créer les répertoires si nécessaire
+# Create directories if needed
 AUDIO_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-# Configuration du modèle
+# Model configuration
 MODEL_NAME = "facebook/seamless-m4t-v2-large"
 SAMPLING_RATE = 16000
 
-# Langues supportées
+# Supported languages
 SUPPORTED_LANGUAGES = {
     "arb": "Arabic",
     "ben": "Bengali",
@@ -66,21 +66,21 @@ SUPPORTED_LANGUAGES = {
     "vie": "Vietnamese"
 }
 
-# Configuration API
+# API configuration
 API_PREFIX = "/api/v1"
-MAX_AUDIO_DURATION = 60  # secondes
-MAX_TEXT_LENGTH = 5000   # caractères
+MAX_AUDIO_DURATION = 60  # seconds
+MAX_TEXT_LENGTH = 5000   # characters
 
-# Configuration GPU
+# GPU configuration
 USE_GPU = True
-GPU_CLEANUP_INTERVAL = 5  # Nettoyer après N requêtes
+GPU_CLEANUP_INTERVAL = 5  # Cleanup after N requests
 
-# Configuration FastAPI
+# FastAPI configuration
 FASTAPI_DEBUG = os.getenv("FASTAPI_DEBUG", "False").lower() == "true"
 FASTAPI_HOST = "0.0.0.0"
 FASTAPI_PORT = 8000
 
-# Configuration Gradio
+# Gradio configuration
 GRADIO_SERVER_NAME = "0.0.0.0"
 GRADIO_SERVER_PORT = 7860
 GRADIO_TITLE = "SeamlessM4T API Tester"
