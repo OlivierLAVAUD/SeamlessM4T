@@ -1,0 +1,71 @@
+# .dockerignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+env/
+.venv/
+venv/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+
+# Logs
+*.log
+*.log.*
+
+# Databases
+*.sqlite
+*.db
+*.db-journal
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Build artifacts
+build/
+dist/
+
+# Coverage
+.coverage
+*.cover
+
+# IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Git
+git/
+.git/
+.gitignore
+
+# Misc
+*.bak
+*.tmp
+*.backup
+*.old
+*.orig

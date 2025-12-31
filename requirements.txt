@@ -1,0 +1,28 @@
+# Requirements pour l'API SeamlessM4T
+
+# Core dependencies
+fastapi==0.109.0
+uvicorn==0.27.0
+gradio==4.19.2
+requests==2.31.0
+python-multipart>=0.0.9
+
+# ML dependencies
+torch==2.1.0
+transformers==4.36.0
+soundfile==0.12.1
+scipy==1.11.4
+numpy==1.26.2
+
+# Audio processing
+librosa==0.10.1
+pydub==0.25.1
+
+# Utilities
+python-dotenv==1.0.0
+
+# For development
+types-requests==2.31.0.20240125
+mypy==1.8.0
+black==23.12.1
+isort==5.13.2
