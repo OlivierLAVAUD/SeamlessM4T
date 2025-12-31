@@ -1,12 +1,7 @@
 # SeamlessM4T API v2
 
-
-
 **Unified API for SeamlessM4T v2 translation services**
 
-![SeamlessM4T Logo](https://raw.githubusercontent.com/facebookresearch/seamless_communication/main/docs/images/seamless_logo.png)
-
-![image.png]
 
 ![SeamlessM4T](image.png)
 
