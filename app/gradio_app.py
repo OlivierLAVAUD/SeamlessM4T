@@ -220,7 +220,7 @@ def t2tt_translation(
 def get_api_status() -> str:
     """Retourne l'état de l'API"""
     if check_api_health():
-        return "🟢 API disponible et opérationnelle"
+        return "🟢 API is available and operational"
     else:
         return "🔴 API not available"
 
@@ -237,11 +237,11 @@ def create_gradio_interface():
         gr.Markdown(f"""
         # 🎤 {GRADIO_TITLE}
         
-        **Test interface for SeamlessM4T v2 API**
+        **Massively Multilingual & Multimodal Machine Translation with Hugginface**
         
         {get_api_status()}
         
-        **Fonctionnalités disponibles:**
+        **Available functionalities:**
         - 🎤 Speech-to-Speech Translation (S2ST)
         - 📝 Speech-to-Text Translation (S2TT)
         - 💬 Text-to-Speech Translation (T2ST)
@@ -269,13 +269,13 @@ def create_gradio_interface():
                     s2st_src_lang = gr.Dropdown(
                         choices=language_codes,
                         value="fra",
-                        label="Langue source",
+                        label="Source Language",
                         info="Sélectionnez la langue de l'audio source"
                     )
                     s2st_tgt_lang = gr.Dropdown(
                         choices=language_codes,
                         value="eng",
-                        label="Langue cible",
+                        label="Target Language",
                         info="Select the translation language"
                     )
                 
@@ -304,12 +304,12 @@ def create_gradio_interface():
                     s2tt_src_lang = gr.Dropdown(
                         choices=language_codes,
                         value="fra",
-                        label="Langue source"
+                        label="Source Language"
                     )
                     s2tt_tgt_lang = gr.Dropdown(
                         choices=language_codes,
                         value="eng",
-                        label="Langue cible"
+                        label="Target Language"
                     )
                 
                 s2tt_btn = gr.Button("Transcrire audio", variant="primary")
@@ -338,12 +338,12 @@ def create_gradio_interface():
                     t2st_src_lang = gr.Dropdown(
                         choices=language_codes,
                         value="fra",
-                        label="Langue source"
+                        label="Source Language"
                     )
                     t2st_tgt_lang = gr.Dropdown(
                         choices=language_codes,
                         value="eng",
-                        label="Langue cible"
+                        label="Target Language"
                     )
                 
                 t2st_btn = gr.Button("Générer audio", variant="primary")
@@ -371,12 +371,12 @@ def create_gradio_interface():
                     t2tt_src_lang = gr.Dropdown(
                         choices=language_codes,
                         value="fra",
-                        label="Langue source"
+                        label="Source Language"
                     )
                     t2tt_tgt_lang = gr.Dropdown(
                         choices=language_codes,
                         value="eng",
-                        label="Langue cible"
+                        label="Target Language"
                     )
                 
                 t2tt_btn = gr.Button("Traduire texte", variant="primary")
@@ -392,23 +392,23 @@ def create_gradio_interface():
             # Onglet Informations
             with gr.Tab("ℹ️ Informations"):
                 gr.Markdown(f"""
-                ## Informations sur l'API
+                ## API Description
                 
-                **État de l'API:** {get_api_status()}
+                **API Status:** {get_api_status()}
                 
-                **Endpoints disponibles:**
-                - `GET /api/v1/health` - Vérifie l'état de santé
-                - `GET /api/v1/languages` - Liste des langues supportées
+                **Available Endpoints:**
+                - `GET /api/v1/health` - Check Health
+                - `GET /api/v1/languages` - Supported Language List
                 - `POST /api/v1/s2st` - Speech-to-Speech Translation
                 - `POST /api/v1/s2tt` - Speech-to-Text Translation
                 - `POST /api/v1/t2st` - Text-to-Speech Translation
                 - `POST /api/v1/t2tt` - Text-to-Text Translation
                 
-                **Langues supportées ({len(languages)} langues):**
+                **Supported Languages: ({len(languages)} languages):**
                 """)
                 
                 # Afficher les langues sous forme de tableau
-                lang_table = "| Code | Nom complet |\n|------|-------------|\n"
+                lang_table = "| Code | Name         |\n|------|-------------|\n"
                 for code, name in sorted(languages.items()):
                     lang_table += f"| `{code}` | {name} |\n"
                 
@@ -426,7 +426,7 @@ def create_gradio_interface():
                 
                 ---
                 
-                **À propos:**
+                **Note:**
                 This interface allows you to test all features of the SeamlessM4T v2 API.
                 Les requêtes sont envoyées à l'API FastAPI qui effectue le traitement réel.
                 

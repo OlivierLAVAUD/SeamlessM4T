@@ -83,4 +83,4 @@ FASTAPI_PORT = 8000
 # Gradio configuration
 GRADIO_SERVER_NAME = "0.0.0.0"
 GRADIO_SERVER_PORT = 7860
-GRADIO_TITLE = "SeamlessM4T API Tester"
+GRADIO_TITLE = "SeamlessM4T API Interface"

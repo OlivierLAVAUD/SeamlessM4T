@@ -67,8 +67,8 @@ docker run --rm --gpus all nvidia/cuda:12.6.0-base-ubuntu22.04 nvidia-smi
 
 ```bash
 # Clone the repository
-git clone https://github.com/votre-repo/seamlessm4t_api.git
-cd seamlessm4t_api
+git clone https://github.com/OlivierLAVAUD/SeamlessM4T.git
+cd seamlessm4t
 
 # Create virtual environment (recommended)
 uv venv --python 3.13.0

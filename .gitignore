@@ -1,3 +1,6 @@
 .venv/
 __pycache__/
 *.pyc
+output_files/
+gradio_temp/
+app/__pycache__/

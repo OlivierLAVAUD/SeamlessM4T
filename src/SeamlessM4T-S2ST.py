@@ -418,12 +418,12 @@ class SeamlessS2STApp:
                 s2st_src_lang = gr.Dropdown(
                     choices=list(self.languages.keys()),
                     value="fra",
-                    label="Langue source"
+                    label="Source Language"
                 )
                 s2st_tgt_lang = gr.Dropdown(
                     choices=list(self.languages.keys()),
                     value="eng",
-                    label="Langue cible"
+                    label="Target Language"
                 )
             
             s2st_btn = gr.Button("Translate audio", variant="primary")

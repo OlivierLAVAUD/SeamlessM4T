@@ -349,12 +349,12 @@ class SeamlessT2TTApp:
                 t2tt_src_lang = gr.Dropdown(
                     choices=list(self.languages.keys()),
                     value="fra",
-                    label="Langue source"
+                    label="Source Language"
                 )
                 t2tt_tgt_lang = gr.Dropdown(
                     choices=list(self.languages.keys()),
                     value="eng",
-                    label="Langue cible"
+                    label="Target Language"
                 )
             
             t2tt_btn = gr.Button("Translate text", variant="primary")
