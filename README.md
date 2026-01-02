@@ -46,7 +46,7 @@ Check the `/api/v1/languages` endpoint for the complete list.
 
 ### Prerequisites
 
-- **Python**: 3.11+ (required for uv compatibility)
+- **Python**: 3.11+
 - **CPU/CUDA**: 12.6+ (optimized for this version)
 - **NVIDIA Drivers**: 561.17+ (recommended)
 - **RAM**: 16GB+ (32GB+ recommended for intensive GPU usage)
