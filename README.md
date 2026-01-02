@@ -245,6 +245,18 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under MIT. See the `LICENSE` file for details.
 
+## 📖 Documentation & Resources
+
+### Official Documentation
+- [SeamlessM4T v2 Model Documentation](https://huggingface.co/docs/transformers/model_doc/seamless_m4t_v2)
+- [SeamlessM4T Model Documentation](https://huggingface.co/docs/transformers/model_doc/seamless_m4t)
+- [Meta AI Research Publication](https://ai.meta.com/research/publications/seamlessm4t-massively-multilingual-multimodal-machine-translation/)
+- [ArXiv Paper](https://arxiv.org/abs/2308.11596)
+
+### Additional Resources
+- [GitHub Repository](https://github.com/facebookresearch/seamless_communication)
+- [Hugging Face Model Hub](https://huggingface.co/facebook/seamless-m4t-v2-large)
+
 ## 📞 Support
 
 For any questions or issues:
