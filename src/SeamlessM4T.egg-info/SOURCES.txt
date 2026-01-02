@@ -1,0 +1,8 @@
+LICENCE
+README.md
+pyproject.toml
+src/SeamlessM4T.egg-info/PKG-INFO
+src/SeamlessM4T.egg-info/SOURCES.txt
+src/SeamlessM4T.egg-info/dependency_links.txt
+src/SeamlessM4T.egg-info/requires.txt
+src/SeamlessM4T.egg-info/top_level.txt

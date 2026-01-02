@@ -1,17 +1,38 @@
+Metadata-Version: 2.4
+Name: SeamlessM4T
+Version: 1.0.0
+Summary: SeamlessM4T—Massively Multilingual & Multimodal Machine Translation
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: blobfile>=3.0.0
+Requires-Dist: gradio>=6.2.0
+Requires-Dist: protobuf>=6.30.2
+Requires-Dist: psutil>=7.2.1
+Requires-Dist: scipy>=1.16.3
+Requires-Dist: soundfile>=0.13.1
+Requires-Dist: tiktoken>=0.9.0
+Requires-Dist: torchaudio>=2.7.0
+Requires-Dist: sentencepiece>=0.2.0
+Requires-Dist: transformers>=4.51.3
+Dynamic: license-file
+
 # SeamlessM4T—Massively Multilingual & Multimodal Machine Translation
 
 **Unified API for SeamlessM4T v2 translation services**
 
+
 ![SeamlessM4T](image.png)
+
 
 ## 📋 Description
 
-This API provides a unified interface to leverage Meta's **SeamlessM4T v2** model, offering four core multilingual translation and transcription services:
+This API provides a unified interface to use the capabilities of Meta's **SeamlessM4T v2** model. It offers four main multilingual translation and transcription services:
 
-- **Speech-to-Speech Translation (S2ST)** : Direct speech translation between languages
-- **Speech-to-Text Translation (S2TT)** : Speech transcription with optional translation
+- **Speech-to-Speech Translation (S2ST)** : Direct speech translation
+- **Speech-to-Text Translation (S2TT)** : Speech transcription and translation
 - **Text-to-Speech Translation (T2ST)** : Multilingual speech synthesis
-- **Text-to-Text Translation (T2TT)** : Text translation across languages
+- **Text-to-Text Translation (T2TT)** : Text translation
 
 ## 🚀 Features
 
@@ -33,55 +54,36 @@ The API supports **40+ languages** including:
 
 Check the `/api/v1/languages` endpoint for the complete list.
 
-### Key Features
-
-- **Unified Interface**: Single API for all translation services
-- **High Performance**: Optimized for CUDA 12.6 and modern GPUs
-- **Easy Deployment**: Docker and source code installation options
-- **Interactive UI**: Gradio interface for easy testing
-- **Batch Processing**: Support for processing multiple files
-- **UV Package Management**: Fast dependency installation with uv
-
 ## 🛠️ Installation
 
 ### Prerequisites
 
-- **Python**: 3.13+ (required for uv compatibility)
-- **CPU/CUDA**: 12.6+ (optimized for this version)
-- **NVIDIA Drivers**: 561.17+ (recommended)
-- **RAM**: 16GB+ (32GB+ recommended for intensive GPU usage)
-- **VRAM**: 4GB minimum, 6GB+ recommended
-- **Note**: A NVIDIA GeForce RTX 3060 with 6GB VRAM is sufficient.
-- **Disk space**: 10GB+ (20GB+ recommended for model downloads and caches)
-- **NVIDIA Container Toolkit**: For Docker GPU support (optional)
+    Python: 3.8+ (3.10 recommended)
+
+    CPU/CUDA: 12.6+ (optimized for this version - confirmed compatible with your system)
+    NVIDIA Drivers: 561.17+ (confirmed compatible with your current setup)
+    RAM: 16GB+ (32GB+ recommended for intensive GPU usage)
+    VRAM: 4GB minimum, 6GB+ recommended
+    Note: A NVIDIA GeForce RTX 3060 with 6GB VRAM is sufficient. 
+    Disk space: 10GB+ (20GB+ recommended for model downloads and caches)
+    NVIDIA Container Toolkit: For Docker GPU support (optional)
+
 
 ### Installation Steps
 
 ```bash
-# 1. Clone the repository
+# Clone the repository
 git clone https://github.com/OlivierLAVAUD/SeamlessM4T.git
-cd SeamlessM4T
-```
+cd  SeamlessM4T
 
-### Quick Deployment with Docker (Recommended)
-
-```bash
-# Build and start the containers
-docker-compose up -d
-
-# Access the application in your browser at: http://localhost:7860/
-```
-
-### Installation from Source Code
-
-```bash
 # Create virtual environment (recommended)
 uv venv
 source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate  # Windows
 
-# Install dependencies using uv
-uv pip install --system -r requirements.txt
+# Install dependencies
+uv pip install -e .
+
 ```
 
 ## 📡 Usage
@@ -89,14 +91,14 @@ uv pip install --system -r requirements.txt
 ### Launching the API
 
 ```bash
-# Launch both API and Gradio (default)
-python main.py
-
 # Launch only FastAPI
 python main.py --api
 
 # Launch only Gradio interface
 python main.py --gradio
+
+# Launch both (default)
+python main.py --both
 
 # Debug mode
 python main.py --debug
@@ -153,11 +155,11 @@ http://localhost:7860
 
 ### Optimizations
 
-- **Single model loading**: The model is loaded once and shared across all services via singleton
-- **Optimized GPU management**: Automatic GPU memory cleanup after 5 requests
-- **Segment processing**: Automatic handling of long audios/texts (>60s or >5000 characters)
-- **CUDA 12.6 support**: Specific optimizations for latest GPU architectures
-- **Optimized Docker**: Configuration specially adapted for CUDA 12.6 and drivers 561.17+
+- **Single model loading** : The model is loaded once and shared across all services via singleton
+- **Optimized GPU management** : Automatic GPU memory cleanup after 5 requests
+- **Segment processing** : Automatic handling of long audios/texts (>60s or >5000 characters)
+- **CUDA 12.6 support** : Specific optimizations for latest GPU architectures
+- **Optimized Docker** : Configuration specially adapted for CUDA 12.6 and drivers 561.17+
 
 ## 🔧 Configuration
 
@@ -213,9 +215,6 @@ docker-compose logs -f
 
 # Stop containers
 docker-compose down
-
-# Cleanup Docker
-docker system prune -a --volumes --force
 ```
 
 **Docker requirements**:
@@ -230,6 +229,25 @@ docker system prune -a --volumes --force
 - Persistence of audio files and results
 - Built-in health checks
 - Performance-optimized configuration
+
+### With systemd
+
+```ini
+# /etc/systemd/system/seamlessm4t-api.service
+[Unit]
+Description=SeamlessM4T API Service
+After=network.target
+
+[Service]
+User=your_user
+WorkingDirectory=/path/to/seamlessm4t_api
+ExecStart=/path/to/venv/bin/python main.py --api
+Restart=always
+Environment="PATH=/path/to/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ## 🤝 Contribution
 
@@ -377,4 +395,4 @@ python main.py > api.log 2>&1 &
 
 ---
 
-© 2026 Olivier LAVAUD | Facebook-SeamlessM4T model | Version 1.0.0
+© 2024 SeamlessM4T API | Version 1.0.0

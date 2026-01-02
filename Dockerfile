@@ -1,58 +1,24 @@
-# Dockerfile optimisé pour CUDA 12.6
-FROM nvidia/cuda:12.6.0-base-ubuntu22.04
+# Use an official Python runtime as a parent image
+FROM python:3.11-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    python3.10 \
-    python3-pip \
-    python3.10-venv \
-    git \
-    curl \
-    wget \
-    build-essential \
-    libsndfile1 \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create and activate virtual environment
-RUN python3.10 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-# Install Python dependencies
+# Set the working directory in the container
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
-# Install PyTorch with CUDA 12.6 support
-RUN pip install torch==2.1.0+cu121 --index-url https://download.pytorch.org/whl/cu121
-
-# Install sentencepiece for SeamlessM4T tokenization
-RUN pip install sentencepiece
-
-# Copy application code
+# Copy the current directory contents into the container at /app
 COPY . /app
-WORKDIR /app
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    FASTAPI_DEBUG=False \
-    USE_GPU=True \
-    FASTAPI_HOST=0.0.0.0 \
-    FASTAPI_PORT=8000 \
-    GRADIO_SERVER_NAME=0.0.0.0 \
-    GRADIO_SERVER_PORT=7860 \
-    NVIDIA_VISIBLE_DEVICES=all \
-    NVIDIA_DRIVER_CAPABILITIES=compute,utility
+# Install uv for package management
+RUN pip install uv
 
-# Create necessary directories
-RUN mkdir -p /app/audio_files /app/output_files /app/logs
+# Install dependencies using uv in system mode
+RUN uv pip install --system -r requirements.txt
 
-# Expose ports
-EXPOSE 8000 7860
+# Make port 7860 available to the world outside this container
+EXPOSE 7860
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s \
-    CMD curl -f http://localhost:8000/api/v1/health || exit 1
+# Define environment variable
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Command to run the application
-CMD ["python", "main.py", "--both"]
+# Run app.py when the container launches
+CMD ["python", "main.py"]

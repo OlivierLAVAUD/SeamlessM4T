@@ -1,44 +1,10 @@
-version: '3.8'
-
 services:
-  seamlessm4t-api:
+  app:
     build: .
-    container_name: seamlessm4t-api
-    restart: unless-stopped
-    runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
     ports:
-      - "8000:8000"  # FastAPI
-      - "7860:7860"  # Gradio
+      - "7860:7860"
     volumes:
-      - ./audio_files:/app/audio_files
-      - ./output_files:/app/output_files
-      - ./logs:/app/logs
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-
-  # Optional: Add a reverse proxy (Nginx)
-  # nginx:
-  #   image: nginx:alpine
-  #   container_name: seamlessm4t-nginx
-  #   restart: unless-stopped
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #     - ./ssl:/etc/nginx/ssl
-  #   depends_on:
-  #     - seamlessm4t-api
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

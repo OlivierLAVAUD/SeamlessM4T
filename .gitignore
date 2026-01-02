@@ -4,3 +4,6 @@ __pycache__/
 output_files/
 gradio_temp/
 app/__pycache__/
+tmp/
+logs/
+
