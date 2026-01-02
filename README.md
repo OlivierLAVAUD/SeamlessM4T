@@ -46,7 +46,7 @@ Check the `/api/v1/languages` endpoint for the complete list.
 
 ### Prerequisites
 
-- **Python**: 3.13+ (required for uv compatibility)
+- **Python**: 3.11+ (required for uv compatibility)
 - **CPU/CUDA**: 12.6+ (optimized for this version)
 - **NVIDIA Drivers**: 561.17+ (recommended)
 - **RAM**: 16GB+ (32GB+ recommended for intensive GPU usage)
@@ -58,12 +58,12 @@ Check the `/api/v1/languages` endpoint for the complete list.
 ### Installation Steps
 
 ```bash
-# 1. Clone the repository
+# Clone the repository
 git clone https://github.com/OlivierLAVAUD/SeamlessM4T.git
 cd SeamlessM4T
 ```
 
-### Quick Deployment with Docker (Recommended)
+#### Quick Deployment with Docker (Recommended)
 
 ```bash
 # Build and start the containers
@@ -72,7 +72,7 @@ docker-compose up -d
 # Access the application in your browser at: http://localhost:7860/
 ```
 
-### Installation from Source Code
+#### Installation from sources
 
 ```bash
 # Create virtual environment (recommended)
